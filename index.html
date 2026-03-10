@@ -3,61 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TXT File Merger</title>
+    <title>IG File Tool</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --bg: #f8f8f6;
-        --surface: #ffffff;
-        --border: #e2e2dc;
-        --border-hover: #c8c8c0;
-        --text: #1a1a18;
-        --text-muted: #888880;
-        --accent: #2d5be3;
-        --accent-light: #eef2ff;
-        --accent-hover: #1e45c4;
-        --success: #16a34a;
-        --success-light: #f0fdf4;
-        --warn: #d97706;
-        --warn-light: #fffbeb;
-        --danger: #dc2626;
+        --bg: #f7f7f5;
+        --surface: #fff;
+        --border: #e3e3dd;
+        --border2: #c9c9c1;
+        --text: #181816;
+        --muted: #8a8a82;
+        --accent: #2a56e0;
+        --alight: #eef1fd;
+        --ahover: #1e44c4;
+        --ok: #15803d;
+        --oklight: #f0fdf4;
+        --warn: #b45309;
+        --warnlight: #fffbeb;
+        --red: #dc2626;
         --mono: "DM Mono", monospace;
         --sans: "DM Sans", sans-serif;
-        --radius: 10px;
-        --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+        --r: 10px;
+        --sh: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
       }
-
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
-
       body {
         font-family: var(--sans);
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
-        padding: 32px 20px 60px;
+        padding: 32px 18px 80px;
       }
-
-      .container {
-        max-width: 780px;
+      .wrap {
+        max-width: 760px;
         margin: 0 auto;
       }
 
-      /* Header */
-      .header {
+      .hdr {
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-bottom: 32px;
+        margin-bottom: 28px;
       }
-      .header-icon {
+      .hdr-ico {
         width: 44px;
         height: 44px;
         background: var(--accent);
@@ -67,57 +62,60 @@
         justify-content: center;
         flex-shrink: 0;
       }
-      .header-icon svg {
+      .hdr-ico svg {
         width: 22px;
         height: 22px;
-        color: white;
+        color: #fff;
       }
-      .header h1 {
-        font-size: 22px;
+      .hdr h1 {
+        font-size: 21px;
         font-weight: 600;
         letter-spacing: -0.3px;
       }
-      .header p {
-        font-size: 13px;
-        color: var(--text-muted);
+      .hdr p {
+        font-size: 12.5px;
+        color: var(--muted);
         margin-top: 2px;
       }
 
-      /* Card */
       .card {
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        margin-bottom: 16px;
+        border-radius: var(--r);
+        box-shadow: var(--sh);
+        margin-bottom: 14px;
         overflow: hidden;
       }
-      .card-header {
-        padding: 16px 20px;
+      .ch {
+        padding: 15px 20px;
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 9px;
       }
-      .card-header h2 {
-        font-size: 14px;
+      .ch h2 {
+        font-size: 13.5px;
         font-weight: 600;
-        letter-spacing: -0.1px;
       }
-      .card-body {
-        padding: 20px;
+      .ch svg {
+        width: 15px;
+        height: 15px;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .cb {
+        padding: 18px 20px;
       }
 
-      /* Mode selector */
-      .mode-grid {
+      .tabs {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 8px;
       }
-      .mode-btn {
+      .tab {
         border: 1.5px solid var(--border);
         border-radius: 8px;
-        padding: 14px 12px;
+        padding: 13px 11px;
         cursor: pointer;
         background: var(--surface);
         text-align: left;
@@ -125,65 +123,90 @@
         position: relative;
         overflow: hidden;
       }
-      .mode-btn:hover {
+      .tab:hover {
         border-color: var(--accent);
-        background: var(--accent-light);
+        background: var(--alight);
       }
-      .mode-btn.active {
+      .tab.on {
         border-color: var(--accent);
-        background: var(--accent-light);
-        box-shadow: 0 0 0 3px rgba(45, 91, 227, 0.12);
+        background: var(--alight);
+        box-shadow: 0 0 0 3px rgba(42, 86, 224, 0.1);
       }
-      .mode-btn.active::after {
+      .tab.on::after {
         content: "";
         position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 8px;
-        height: 8px;
+        top: 7px;
+        right: 7px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         background: var(--accent);
       }
-      .mode-label {
-        font-size: 11px;
-        font-weight: 600;
+      .tl {
+        font-size: 10.5px;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.6px;
-        color: var(--text-muted);
-        margin-bottom: 4px;
+        color: var(--muted);
+        margin-bottom: 3px;
       }
-      .mode-btn.active .mode-label {
+      .tab.on .tl {
         color: var(--accent);
       }
-      .mode-name {
+      .tn {
         font-size: 13px;
         font-weight: 600;
-        color: var(--text);
-        margin-bottom: 4px;
+        margin-bottom: 3px;
       }
-      .mode-desc {
-        font-size: 11.5px;
-        color: var(--text-muted);
-        line-height: 1.45;
+      .td {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.4;
       }
 
-      /* Drop zone */
-      .drop-zone {
+      .info {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        padding: 11px 13px;
+        border-radius: 8px;
+        font-size: 12px;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+      .info svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .info.blue {
+        background: var(--alight);
+        border: 1px solid rgba(42, 86, 224, 0.18);
+        color: #1e3fa0;
+      }
+      .info.yellow {
+        background: var(--warnlight);
+        border: 1px solid rgba(180, 83, 9, 0.18);
+        color: var(--warn);
+      }
+
+      .dz {
         border: 2px dashed var(--border);
         border-radius: 8px;
-        padding: 36px 24px;
+        padding: 32px 20px;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s;
         background: var(--bg);
         position: relative;
       }
-      .drop-zone:hover,
-      .drop-zone.dragging {
+      .dz:hover,
+      .dz.drag {
         border-color: var(--accent);
-        background: var(--accent-light);
+        background: var(--alight);
       }
-      .drop-zone input[type="file"] {
+      .dz input {
         position: absolute;
         inset: 0;
         opacity: 0;
@@ -191,214 +214,161 @@
         width: 100%;
         height: 100%;
       }
-      .drop-icon {
-        width: 36px;
-        height: 36px;
+      .dz-ico {
+        width: 34px;
+        height: 34px;
         background: var(--border);
-        border-radius: 8px;
+        border-radius: 7px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 12px;
+        margin: 0 auto 10px;
         transition: background 0.2s;
       }
-      .drop-zone:hover .drop-icon,
-      .drop-zone.dragging .drop-icon {
-        background: rgba(45, 91, 227, 0.15);
+      .dz:hover .dz-ico,
+      .dz.drag .dz-ico {
+        background: rgba(42, 86, 224, 0.13);
       }
-      .drop-icon svg {
-        width: 18px;
-        height: 18px;
-        color: var(--text-muted);
+      .dz-ico svg {
+        width: 17px;
+        height: 17px;
+        color: var(--muted);
       }
-      .drop-zone:hover .drop-icon svg,
-      .drop-zone.dragging .drop-icon svg {
+      .dz:hover .dz-ico svg,
+      .dz.drag .dz-ico svg {
         color: var(--accent);
       }
-      .drop-title {
-        font-size: 14px;
+      .dz-t {
+        font-size: 13.5px;
         font-weight: 500;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
       }
-      .drop-sub {
+      .dz-s {
         font-size: 12px;
-        color: var(--text-muted);
+        color: var(--muted);
       }
-      .drop-sub span {
+      .dz-s b {
         color: var(--accent);
-        font-weight: 500;
-        cursor: pointer;
       }
 
-      /* File list */
-      .file-list {
-        margin-top: 14px;
+      .fl {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 5px;
+        margin-top: 12px;
       }
-      .file-item {
+      .fi {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 9px 12px;
+        gap: 9px;
+        padding: 8px 11px;
         background: var(--bg);
         border: 1px solid var(--border);
         border-radius: 7px;
-        font-size: 13px;
-        animation: slideIn 0.15s ease;
+        animation: sin 0.15s ease;
       }
-      @keyframes slideIn {
+      @keyframes sin {
         from {
           opacity: 0;
-          transform: translateY(-4px);
+          transform: translateY(-3px);
         }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-      .file-icon {
-        font-size: 15px;
+      .fi-ico {
+        font-size: 14px;
         flex-shrink: 0;
       }
-      .file-name {
+      .fi-name {
         flex: 1;
         font-family: var(--mono);
-        font-size: 12px;
-        color: var(--text);
+        font-size: 11.5px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .file-size {
-        font-size: 11px;
-        color: var(--text-muted);
-        flex-shrink: 0;
-      }
-      .file-lines {
+      .fi-ln {
         font-size: 11px;
         color: var(--accent);
         font-family: var(--mono);
         flex-shrink: 0;
       }
-      .file-remove {
+      .fi-sz {
+        font-size: 10.5px;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .fi-rm {
         width: 20px;
         height: 20px;
         border: none;
         background: none;
         cursor: pointer;
-        color: var(--text-muted);
+        color: var(--muted);
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 4px;
         flex-shrink: 0;
         transition: all 0.1s;
-        font-size: 14px;
-        line-height: 1;
+        font-size: 13px;
       }
-      .file-remove:hover {
+      .fi-rm:hover {
         background: #fee2e2;
-        color: var(--danger);
+        color: var(--red);
       }
 
-      /* Stats bar */
-      .stats-bar {
+      .stats {
         display: flex;
-        gap: 20px;
-        padding: 12px 16px;
+        gap: 16px;
+        padding: 11px 14px;
         background: var(--bg);
         border: 1px solid var(--border);
         border-radius: 8px;
-        margin-top: 14px;
+        margin-top: 12px;
       }
-      .stat {
+      .st {
         text-align: center;
+        flex: 1;
       }
-      .stat-val {
-        font-size: 18px;
-        font-weight: 600;
+      .sv {
+        font-size: 17px;
+        font-weight: 700;
         font-family: var(--mono);
-        color: var(--text);
       }
-      .stat-key {
-        font-size: 11px;
-        color: var(--text-muted);
+      .sk {
+        font-size: 10.5px;
+        color: var(--muted);
         margin-top: 1px;
       }
-      .stat-divider {
+      .sdiv {
         width: 1px;
         background: var(--border);
         flex-shrink: 0;
       }
 
-      /* Process info */
-      .info-box {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 12px 14px;
-        border-radius: 8px;
+      .emp {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
+        padding: 24px;
+        color: var(--muted);
         font-size: 12.5px;
-        line-height: 1.5;
-        margin-bottom: 16px;
       }
-      .info-box.blue {
-        background: var(--accent-light);
-        border: 1px solid rgba(45, 91, 227, 0.2);
-        color: #1e40af;
-      }
-      .info-box.green {
-        background: var(--success-light);
-        border: 1px solid rgba(22, 163, 74, 0.2);
-        color: #15803d;
-      }
-      .info-box.yellow {
-        background: var(--warn-light);
-        border: 1px solid rgba(217, 119, 6, 0.2);
-        color: #92400e;
-      }
-      .info-box svg {
-        width: 15px;
-        height: 15px;
-        flex-shrink: 0;
-        margin-top: 1px;
-      }
-
-      /* Progress */
-      .progress-wrap {
-        margin-bottom: 16px;
-      }
-      .progress-label {
+      .emp.on {
         display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-bottom: 6px;
-      }
-      .progress-bar-bg {
-        height: 6px;
-        background: var(--border);
-        border-radius: 99px;
-        overflow: hidden;
-      }
-      .progress-bar {
-        height: 100%;
-        background: var(--accent);
-        border-radius: 99px;
-        width: 0%;
-        transition: width 0.3s ease;
       }
 
-      /* Buttons */
       .btn {
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        padding: 10px 18px;
+        padding: 9px 16px;
         border-radius: 8px;
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 500;
         cursor: pointer;
         border: 1.5px solid transparent;
@@ -406,174 +376,222 @@
         font-family: var(--sans);
       }
       .btn svg {
-        width: 15px;
-        height: 15px;
+        width: 14px;
+        height: 14px;
       }
-      .btn-primary {
+      .bp {
         background: var(--accent);
-        color: white;
+        color: #fff;
         border-color: var(--accent);
       }
-      .btn-primary:hover:not(:disabled) {
-        background: var(--accent-hover);
-        border-color: var(--accent-hover);
+      .bp:hover:not(:disabled) {
+        background: var(--ahover);
       }
-      .btn-primary:disabled {
-        opacity: 0.45;
+      .bp:disabled {
+        opacity: 0.4;
         cursor: not-allowed;
       }
-      .btn-secondary {
-        background: white;
+      .bs {
+        background: #fff;
         color: var(--text);
         border-color: var(--border);
       }
-      .btn-secondary:hover {
-        border-color: var(--border-hover);
+      .bs:hover {
+        border-color: var(--border2);
         background: var(--bg);
       }
-      .btn-success {
-        background: var(--success);
-        color: white;
-        border-color: var(--success);
+      .bg {
+        background: var(--ok);
+        color: #fff;
+        border-color: var(--ok);
       }
-      .btn-success:hover {
-        background: #15803d;
+      .bg:hover {
+        background: #166534;
       }
-      .btn-row {
+      .bo {
+        background: transparent;
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .bo:hover {
+        background: var(--alight);
+      }
+      .brow {
         display: flex;
-        gap: 10px;
+        gap: 9px;
         align-items: center;
         flex-wrap: wrap;
       }
 
-      /* Result */
-      .result-card {
+      .rc {
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
+        border-radius: var(--r);
+        box-shadow: var(--sh);
+        margin-bottom: 14px;
         overflow: hidden;
-        margin-top: 16px;
         display: none;
-        animation: fadeUp 0.25s ease;
+        animation: fup 0.2s ease;
       }
-      @keyframes fadeUp {
+      @keyframes fup {
         from {
           opacity: 0;
-          transform: translateY(8px);
+          transform: translateY(6px);
         }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-      .result-card.visible {
+      .rc.on {
         display: block;
       }
-
-      .result-header {
+      .rh {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 20px;
+        padding: 13px 20px;
         border-bottom: 1px solid var(--border);
-        background: var(--success-light);
+        background: var(--oklight);
       }
-      .result-title {
+      .rtitle {
         display: flex;
         align-items: center;
-        gap: 8px;
-        font-size: 14px;
+        gap: 7px;
+        font-size: 13.5px;
         font-weight: 600;
-        color: var(--success);
+        color: var(--ok);
       }
-      .result-title svg {
-        width: 16px;
-        height: 16px;
+      .rtitle svg {
+        width: 15px;
+        height: 15px;
       }
-
-      .result-preview {
+      .rbadge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: 99px;
+        background: rgba(21, 128, 61, 0.12);
+        color: var(--ok);
+      }
+      .rprev {
         font-family: var(--mono);
         font-size: 11px;
         line-height: 1.6;
-        padding: 16px 20px;
-        max-height: 200px;
+        padding: 14px 20px;
+        max-height: 170px;
         overflow-y: auto;
-        color: var(--text-muted);
+        color: var(--muted);
         background: var(--bg);
         border-bottom: 1px solid var(--border);
         white-space: pre-wrap;
         word-break: break-all;
       }
-      .result-footer {
-        padding: 14px 20px;
+      .rf {
+        padding: 13px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        gap: 10px;
+        flex-wrap: wrap;
       }
-      .result-meta {
+      .rmeta {
         font-size: 12px;
-        color: var(--text-muted);
+        color: var(--muted);
       }
-      .result-meta strong {
+      .rmeta b {
         color: var(--text);
       }
 
-      /* Toast */
-      .toast {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        padding: 11px 18px;
+      .sc {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        box-shadow: var(--sh);
+        margin-bottom: 14px;
+        overflow: hidden;
+        display: none;
+        animation: fup 0.2s ease;
+      }
+      .sc.on {
+        display: block;
+      }
+      .sinput {
+        padding: 9px 11px;
+        border: 1.5px solid var(--border);
         border-radius: 8px;
         font-size: 13px;
+        font-family: var(--mono);
+        color: var(--text);
+        background: var(--bg);
+        outline: none;
+        transition: border 0.15s;
+        width: 100%;
+      }
+      .sinput:focus {
+        border-color: var(--accent);
+      }
+      .slabel {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 4px;
+        display: block;
+      }
+      .chip {
+        padding: 4px 9px;
+        background: var(--alight);
+        border: 1px solid rgba(42, 86, 224, 0.18);
+        border-radius: 6px;
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--accent);
+      }
+      .chipm {
+        padding: 4px 9px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 12.5px;
         font-weight: 500;
-        box-shadow: var(--shadow-md);
-        transform: translateY(80px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transform: translateY(70px);
         opacity: 0;
-        transition: all 0.25s ease;
-        z-index: 100;
+        transition: all 0.22s ease;
+        z-index: 999;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 7px;
       }
       .toast.show {
         transform: translateY(0);
         opacity: 1;
       }
-      .toast.success {
+      .toast.ok {
         background: #166534;
-        color: white;
+        color: #fff;
       }
-      .toast.error {
+      .toast.err {
         background: #991b1b;
-        color: white;
+        color: #fff;
       }
       .toast svg {
-        width: 15px;
-        height: 15px;
+        width: 14px;
+        height: 14px;
       }
 
-      /* Empty state */
-      .empty {
-        display: none;
-      }
-      .empty.visible {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 28px;
-        color: var(--text-muted);
-        font-size: 13px;
-        gap: 8px;
-      }
-
-      /* Scrollbar */
       ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 5px;
       }
       ::-webkit-scrollbar-track {
         background: transparent;
@@ -582,27 +600,21 @@
         background: var(--border);
         border-radius: 99px;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--border-hover);
-      }
-
-      @media (max-width: 520px) {
-        .mode-grid {
+      @media (max-width: 500px) {
+        .tabs {
           grid-template-columns: 1fr;
         }
-        .stats-bar {
-          gap: 12px;
+        .stats {
+          gap: 8px;
         }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <!-- Header -->
-      <div class="header">
-        <div class="header-icon">
+    <div class="wrap">
+      <div class="hdr">
+        <div class="hdr-ico">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.8"
@@ -616,23 +628,19 @@
           </svg>
         </div>
         <div>
-          <h1>TXT File Merger</h1>
-          <p>Kéo thả file TXT · Gộp dữ liệu · Xuất file sạch</p>
+          <h1>IG File Tool</h1>
+          <p>Kéo thả · Gộp file · Tách file · Xuất .txt</p>
         </div>
       </div>
 
-      <!-- Mode selector -->
+      <!-- Mode -->
       <div class="card">
-        <div class="card-header">
+        <div class="ch">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="2"
             stroke="currentColor"
-            style="color: var(--text-muted)"
           >
             <path
               stroke-linecap="round"
@@ -642,39 +650,35 @@
           </svg>
           <h2>Chọn Mode xử lý</h2>
         </div>
-        <div class="card-body">
-          <div class="mode-grid">
-            <button class="mode-btn active" onclick="setMode(1)">
-              <div class="mode-label">Mode 1</div>
-              <div class="mode-name">File Thất Bại</div>
-              <div class="mode-desc">Gộp file · Giữ nguyên toàn bộ dữ liệu</div>
+        <div class="cb">
+          <div class="tabs">
+            <button class="tab on" onclick="setMode(1)">
+              <div class="tl">Mode 1</div>
+              <div class="tn">File Thất Bại</div>
+              <div class="td">Gộp file · Giữ nguyên 100%</div>
             </button>
-            <button class="mode-btn" onclick="setMode(2)">
-              <div class="mode-label">Mode 2</div>
-              <div class="mode-name">Chỉ 2FA</div>
-              <div class="mode-desc">Gộp file · Xóa 4 cột trống (10–13)</div>
+            <button class="tab" onclick="setMode(2)">
+              <div class="tl">Mode 2</div>
+              <div class="tn">Chỉ 2FA</div>
+              <div class="td">Gộp file · Xóa 4 cột trống (10–13)</div>
             </button>
-            <button class="mode-btn" onclick="setMode(3)">
-              <div class="mode-label">Mode 3</div>
-              <div class="mode-name">File Thường</div>
-              <div class="mode-desc">Gộp file · Không chỉnh sửa gì cả</div>
+            <button class="tab" onclick="setMode(3)">
+              <div class="tl">Mode 3</div>
+              <div class="tn">File Thường</div>
+              <div class="td">Gộp file · Không sửa gì</div>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Drop zone -->
+      <!-- Upload -->
       <div class="card">
-        <div class="card-header">
+        <div class="ch">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="2"
             stroke="currentColor"
-            style="color: var(--text-muted)"
           >
             <path
               stroke-linecap="round"
@@ -684,10 +688,9 @@
           </svg>
           <h2>Upload Files</h2>
         </div>
-        <div class="card-body">
-          <div id="modeInfo" class="info-box blue">
+        <div class="cb">
+          <div id="modeInfo" class="info blue">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="2"
@@ -699,23 +702,21 @@
                 d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
               />
             </svg>
-            <span id="modeInfoText"
-              >Mode 1 – File Thất Bại: Gộp tất cả dòng từ các file, giữ nguyên
-              100% dữ liệu, không xóa hay sửa gì.</span
+            <span id="modeInfoTxt"
+              >Mode 1 – File Thất Bại: Gộp tất cả dòng, giữ nguyên 100% dữ liệu,
+              không sửa gì.</span
             >
           </div>
-
-          <div class="drop-zone" id="dropZone">
+          <div class="dz" id="dz">
             <input
               type="file"
-              id="fileInput"
+              id="fi"
               multiple
               accept=".txt"
-              onchange="handleFiles(this.files)"
+              onchange="addFiles(this.files)"
             />
-            <div class="drop-icon">
+            <div class="dz-ico">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.8"
@@ -728,54 +729,254 @@
                 />
               </svg>
             </div>
-            <div class="drop-title">Kéo thả file TXT vào đây</div>
-            <div class="drop-sub">
-              hoặc <span>click để chọn file</span> từ máy tính
+            <div class="dz-t">Kéo thả file TXT vào đây</div>
+            <div class="dz-s">hoặc <b>click để chọn</b> từ máy tính</div>
+          </div>
+          <div id="emp" class="emp on">
+            <svg
+              width="22"
+              height="22"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              style="color: var(--border)"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+              />
+            </svg>
+            Chưa có file nào
+          </div>
+          <div id="flist" class="fl"></div>
+          <div id="stats" class="stats" style="display: none">
+            <div class="st">
+              <div class="sv" id="sFiles">0</div>
+              <div class="sk">Files</div>
+            </div>
+            <div class="sdiv"></div>
+            <div class="st">
+              <div class="sv" id="sLines">0</div>
+              <div class="sk">Tổng dòng</div>
+            </div>
+            <div class="sdiv"></div>
+            <div class="st">
+              <div class="sv" id="sEmpty">0</div>
+              <div class="sk">Dòng trống</div>
+            </div>
+            <div class="sdiv"></div>
+            <div class="st">
+              <div class="sv" id="sSize">0KB</div>
+              <div class="sk">Dung lượng</div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div id="fileListWrap">
-            <div id="emptyState" class="empty visible">
+      <!-- Standalone Split -->
+      <div class="card">
+        <div class="ch">
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+            />
+          </svg>
+          <h2>Tách File</h2>
+        </div>
+        <div class="cb">
+          <div class="dz" id="sdz">
+            <input
+              type="file"
+              id="sfi"
+              accept=".txt"
+              onchange="loadSplitFile(this.files)"
+            />
+            <div class="dz-ico">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                stroke-width="1.8"
                 stroke="currentColor"
-                style="color: var(--border)"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
                 />
               </svg>
-              Chưa có file nào được thêm
             </div>
-            <div id="fileList" class="file-list"></div>
+            <div class="dz-t">Kéo thả file TXT cần tách</div>
+            <div class="dz-s">hoặc <b>click để chọn</b> · chỉ 1 file</div>
           </div>
 
-          <div id="statsBar" class="stats-bar" style="display: none">
-            <div class="stat">
-              <div class="stat-val" id="statFiles">0</div>
-              <div class="stat-key">Files</div>
+          <div id="sf-info" style="display: none; margin-top: 10px">
+            <div class="fi" id="sf-item"></div>
+          </div>
+
+          <div id="sf-options" style="display: none; margin-top: 14px">
+            <!-- Mode toggle -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px">
+              <button
+                id="sm-even"
+                class="btn bp"
+                style="flex: 1; justify-content: center"
+                onclick="setSplitMode('even')"
+              >
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
+                  />
+                </svg>
+                Chia đều (số file)
+              </button>
+              <button
+                id="sm-rows"
+                class="btn bs"
+                style="flex: 1; justify-content: center"
+                onclick="setSplitMode('rows')"
+              >
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                  />
+                </svg>
+                Số dòng mỗi file
+              </button>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat">
-              <div class="stat-val" id="statLines">0</div>
-              <div class="stat-key">Tổng dòng</div>
+
+            <div
+              style="
+                display: flex;
+                align-items: flex-end;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-bottom: 14px;
+              "
+            >
+              <div style="flex: 1; min-width: 120px">
+                <label class="slabel" id="sf-lbl">Số file muốn tách</label>
+                <input
+                  type="number"
+                  id="sf-val"
+                  class="sinput"
+                  min="1"
+                  value="2"
+                  oninput="calcSplit()"
+                />
+              </div>
+              <div style="flex: 1; min-width: 120px">
+                <label class="slabel">Tên file gốc</label>
+                <input
+                  type="text"
+                  id="sf-base"
+                  class="sinput"
+                  value="ig"
+                  oninput="calcSplit()"
+                />
+              </div>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat">
-              <div class="stat-val" id="statEmpty">0</div>
-              <div class="stat-key">Dòng trống</div>
+            <!-- Output format -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px">
+              <button
+                id="out-files"
+                class="btn bp"
+                style="flex: 1; justify-content: center"
+                onclick="setOutMode('files')"
+              >
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                  />
+                </svg>
+                Tải từng file
+              </button>
+              <button
+                id="out-zip"
+                class="btn bs"
+                style="flex: 1; justify-content: center"
+                onclick="setOutMode('zip')"
+              >
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+                  />
+                </svg>
+                Nén ZIP
+              </button>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat">
-              <div class="stat-val" id="statSize">0KB</div>
-              <div class="stat-key">Tổng dung lượng</div>
+            <button
+              class="btn bp"
+              id="sf-exec-btn"
+              onclick="execSplit()"
+              style="width: 100%; justify-content: center"
+            >
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+              Tách &amp; Tải từng file
+            </button>
+
+            <div id="sf-prev" style="display: none">
+              <div
+                style="
+                  font-size: 11.5px;
+                  color: var(--muted);
+                  font-weight: 600;
+                  margin-bottom: 7px;
+                "
+              >
+                Preview:
+              </div>
+              <div
+                id="sf-chips"
+                style="display: flex; flex-wrap: wrap; gap: 5px"
+              ></div>
             </div>
           </div>
         </div>
@@ -783,16 +984,15 @@
 
       <!-- Actions -->
       <div class="card">
-        <div class="card-body" style="padding: 16px 20px">
-          <div class="btn-row">
+        <div class="cb" style="padding: 14px 18px">
+          <div class="brow">
             <button
-              class="btn btn-primary"
-              id="processBtn"
+              class="btn bp"
+              id="procBtn"
               onclick="processFiles()"
               disabled
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="2"
@@ -804,11 +1004,10 @@
                   d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
                 />
               </svg>
-              Xử lý & Gộp File
+              Xử lý &amp; Gộp File
             </button>
-            <button class="btn btn-secondary" onclick="clearAll()">
+            <button class="btn bs" onclick="clearAll()">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="2"
@@ -826,12 +1025,11 @@
         </div>
       </div>
 
-      <!-- Result -->
-      <div class="result-card" id="resultCard">
-        <div class="result-header">
-          <div class="result-title">
+      <!-- Merge Result -->
+      <div class="rc" id="rc">
+        <div class="rh">
+          <div class="rtitle">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="2"
@@ -843,26 +1041,68 @@
                 d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Xử lý hoàn tất!
+            Gộp hoàn tất!
           </div>
-          <span
-            id="resultBadge"
-            style="
-              font-size: 11px;
-              font-weight: 600;
-              padding: 3px 9px;
-              border-radius: 99px;
-              background: rgba(22, 163, 74, 0.12);
-              color: var(--success);
-            "
-          ></span>
+          <span class="rbadge" id="rbadge"></span>
         </div>
-        <div class="result-preview" id="resultPreview"></div>
-        <div class="result-footer">
-          <div class="result-meta" id="resultMeta"></div>
-          <button class="btn btn-success" onclick="downloadResult()">
+        <div class="rprev" id="rprev"></div>
+        <div class="rf">
+          <div class="rmeta" id="rmeta"></div>
+          <div class="brow">
+            <button class="btn bo" onclick="openSplit()">
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+                />
+              </svg>
+              Tách file
+            </button>
+            <button class="btn bg" onclick="dlMerged()">
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+              Tải file gộp
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Section -->
+      <div class="sc" id="sc">
+        <div class="ch">
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+            />
+          </svg>
+          <h2>Tách File</h2>
+        </div>
+        <div class="cb">
+          <div class="info blue">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="2"
@@ -871,20 +1111,82 @@
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
               />
             </svg>
-            Tải xuống .txt
-          </button>
+            <span
+              >Nhập số dòng mỗi file · Tự chia đều · Đánh số thứ tự · Tên:
+              <b>tên_1-dd-mm-yyyy-sốdòng.txt</b></span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: flex-end;
+              gap: 10px;
+              flex-wrap: wrap;
+              margin-bottom: 14px;
+            "
+          >
+            <div style="flex: 1; min-width: 120px">
+              <label class="slabel">Số dòng mỗi file</label>
+              <input
+                type="number"
+                id="sc-n"
+                class="sinput"
+                min="1"
+                value="500"
+                oninput="previewSplit()"
+              />
+            </div>
+            <div style="flex: 1; min-width: 120px">
+              <label class="slabel">Tên file gốc</label>
+              <input
+                type="text"
+                id="sc-b"
+                class="sinput"
+                value="ig"
+                oninput="previewSplit()"
+              />
+            </div>
+            <button class="btn bp" onclick="doSplit()">
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+              Tách &amp; Tải xuống
+            </button>
+          </div>
+          <div id="sp-wrap" style="display: none">
+            <div
+              style="
+                font-size: 11.5px;
+                color: var(--muted);
+                font-weight: 600;
+                margin-bottom: 7px;
+              "
+            >
+              Preview — sẽ tạo ra:
+            </div>
+            <div
+              id="sp-list"
+              style="display: flex; flex-wrap: wrap; gap: 5px"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast">
       <svg
-        id="toastIcon"
-        xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         stroke-width="2"
@@ -900,238 +1202,749 @@
     </div>
 
     <script>
-      let currentMode = 1;
-      let files = []; // {name, content, lines}
-      let resultContent = "";
+      var mode = 1;
+      var fileData = [];
+      var merged = "";
 
-      const modeInfoMap = {
-        1: "Mode 1 – File Thất Bại: Gộp tất cả dòng từ các file, giữ nguyên 100% dữ liệu, không xóa hay sửa gì.",
-        2: 'Mode 2 – Chỉ 2FA: Gộp file và xóa các cột trống ở vị trí 10, 11, 12, 13 (separator "|") trong mỗi dòng.',
-        3: "Mode 3 – File Thường: Gộp tất cả dòng từ các file, không chỉnh sửa bất kỳ điều gì.",
+      var modeText = {
+        1: "Mode 1 – File Thất Bại: Gộp tất cả dòng, giữ nguyên 100% dữ liệu, không sửa gì.",
+        2: 'Mode 2 – Chỉ 2FA: Gộp file và xóa 4 cột trống ở vị trí 10–13 (phân cách bằng "|").',
+        3: "Mode 3 – File Thường: Gộp tất cả dòng, không chỉnh sửa bất kỳ điều gì.",
       };
-      const modeInfoColors = { 1: "blue", 2: "yellow", 3: "blue" };
+      var modeColor = { 1: "blue", 2: "yellow", 3: "blue" };
 
       function setMode(m) {
-        currentMode = m;
-        document.querySelectorAll(".mode-btn").forEach((btn, i) => {
-          btn.classList.toggle("active", i === m - 1);
+        mode = m;
+        document.querySelectorAll(".tab").forEach(function (t, i) {
+          t.classList.toggle("on", i === m - 1);
         });
-        const box = document.getElementById("modeInfo");
-        box.className = "info-box " + modeInfoColors[m];
-        document.getElementById("modeInfoText").textContent = modeInfoMap[m];
-        // Hide result when changing mode
-        document.getElementById("resultCard").classList.remove("visible");
+        var box = document.getElementById("modeInfo");
+        box.className = "info " + modeColor[m];
+        document.getElementById("modeInfoTxt").textContent = modeText[m];
+        document.getElementById("rc").classList.remove("on");
+        document.getElementById("sc").classList.remove("on");
       }
 
-      // Drag & drop
-      const dz = document.getElementById("dropZone");
-      dz.addEventListener("dragover", (e) => {
+      var dz = document.getElementById("dz");
+      dz.addEventListener("dragover", function (e) {
         e.preventDefault();
-        dz.classList.add("dragging");
+        dz.classList.add("drag");
       });
-      dz.addEventListener("dragleave", () => dz.classList.remove("dragging"));
-      dz.addEventListener("drop", (e) => {
+      dz.addEventListener("dragleave", function () {
+        dz.classList.remove("drag");
+      });
+      dz.addEventListener("drop", function (e) {
         e.preventDefault();
-        dz.classList.remove("dragging");
-        const dropped = Array.from(e.dataTransfer.files).filter((f) =>
-          f.name.endsWith(".txt"),
-        );
-        if (dropped.length === 0) {
-          showToast("Chỉ nhận file .txt!", "error");
+        dz.classList.remove("drag");
+        var fs = Array.from(e.dataTransfer.files).filter(function (f) {
+          return f.name.endsWith(".txt");
+        });
+        if (!fs.length) {
+          toast("Chỉ nhận file .txt!", "err");
           return;
         }
-        handleFiles(dropped);
+        addFiles(fs);
       });
 
-      function handleFiles(fileList) {
-        const arr = Array.from(fileList);
-        let loaded = 0;
-        arr.forEach((file) => {
-          if (!file.name.endsWith(".txt")) return;
-          // Check duplicate
-          if (files.some((f) => f.name === file.name && f.size === file.size))
-            return;
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const content = e.target.result;
-            const lines = content.split("\n").filter((l) => l.trim() !== "");
-            files.push({ name: file.name, content, lines, size: file.size });
-            loaded++;
-            if (loaded === arr.length) renderFileList();
+      function addFiles(list) {
+        var arr = Array.from(list).filter(function (f) {
+          return f.name.endsWith(".txt");
+        });
+        var fresh = arr.filter(function (f) {
+          return !fileData.some(function (x) {
+            return x.name === f.name && x.size === f.size;
+          });
+        });
+        if (!fresh.length) {
+          toast("File đã tồn tại!", "err");
+          return;
+        }
+        var done = 0;
+        fresh.forEach(function (f) {
+          var r = new FileReader();
+          r.onload = function (e) {
+            var c = e.target.result;
+            var lines = c.split("\n").filter(function (l) {
+              return l.trim() !== "";
+            });
+            fileData.push({
+              name: f.name,
+              content: c,
+              lines: lines,
+              size: f.size,
+            });
+            done++;
+            if (done === fresh.length) renderList();
           };
-          reader.readAsText(file, "UTF-8");
+          r.readAsText(f, "UTF-8");
         });
       }
 
-      function renderFileList() {
-        const list = document.getElementById("fileList");
-        const empty = document.getElementById("emptyState");
-        const statsBar = document.getElementById("statsBar");
-        const processBtn = document.getElementById("processBtn");
-
+      function renderList() {
+        var list = document.getElementById("flist");
+        var emp = document.getElementById("emp");
+        var stats = document.getElementById("stats");
+        var btn = document.getElementById("procBtn");
         list.innerHTML = "";
-        if (files.length === 0) {
-          empty.classList.add("visible");
-          statsBar.style.display = "none";
-          processBtn.disabled = true;
+        if (!fileData.length) {
+          emp.classList.add("on");
+          stats.style.display = "none";
+          btn.disabled = true;
           return;
         }
-        empty.classList.remove("visible");
-        statsBar.style.display = "flex";
-        processBtn.disabled = false;
-
-        files.forEach((f, idx) => {
-          const item = document.createElement("div");
-          item.className = "file-item";
-          item.innerHTML = `
-      <span class="file-icon">📄</span>
-      <span class="file-name">${f.name}</span>
-      <span class="file-lines">${f.lines.length.toLocaleString()} dòng</span>
-      <span class="file-size">${formatSize(f.size)}</span>
-      <button class="file-remove" onclick="removeFile(${idx})" title="Xóa">✕</button>
-    `;
-          list.appendChild(item);
+        emp.classList.remove("on");
+        stats.style.display = "flex";
+        btn.disabled = false;
+        fileData.forEach(function (f, i) {
+          var d = document.createElement("div");
+          d.className = "fi";
+          d.innerHTML =
+            '<span class="fi-ico">📄</span>' +
+            '<span class="fi-name">' +
+            esc(f.name) +
+            "</span>" +
+            '<span class="fi-ln">' +
+            f.lines.length.toLocaleString() +
+            " dòng</span>" +
+            '<span class="fi-sz">' +
+            fmtSz(f.size) +
+            "</span>" +
+            '<button class="fi-rm" onclick="rmFile(' +
+            i +
+            ')" title="Xóa">✕</button>';
+          list.appendChild(d);
         });
-
-        // Stats
-        const totalLines = files.reduce((s, f) => s + f.lines.length, 0);
-        const totalEmpty = files.reduce((s, f) => {
-          const all = f.content.split("\n").length;
-          return s + (all - f.lines.length);
+        var tl = fileData.reduce(function (s, f) {
+          return s + f.lines.length;
         }, 0);
-        const totalSize = files.reduce((s, f) => s + f.size, 0);
-        document.getElementById("statFiles").textContent = files.length;
-        document.getElementById("statLines").textContent =
-          totalLines.toLocaleString();
-        document.getElementById("statEmpty").textContent =
-          totalEmpty.toLocaleString();
-        document.getElementById("statSize").textContent = formatSize(totalSize);
+        var te = fileData.reduce(function (s, f) {
+          return s + (f.content.split("\n").length - f.lines.length);
+        }, 0);
+        var ts = fileData.reduce(function (s, f) {
+          return s + f.size;
+        }, 0);
+        document.getElementById("sFiles").textContent = fileData.length;
+        document.getElementById("sLines").textContent = tl.toLocaleString();
+        document.getElementById("sEmpty").textContent = te.toLocaleString();
+        document.getElementById("sSize").textContent = fmtSz(ts);
       }
 
-      function removeFile(idx) {
-        files.splice(idx, 1);
-        renderFileList();
-        document.getElementById("resultCard").classList.remove("visible");
+      function rmFile(i) {
+        fileData.splice(i, 1);
+        renderList();
+        document.getElementById("rc").classList.remove("on");
+        document.getElementById("sc").classList.remove("on");
       }
 
       function clearAll() {
-        files = [];
-        document.getElementById("fileInput").value = "";
-        renderFileList();
-        document.getElementById("resultCard").classList.remove("visible");
-        showToast("Đã xóa tất cả file", "success");
+        fileData = [];
+        merged = "";
+        document.getElementById("fi").value = "";
+        renderList();
+        document.getElementById("rc").classList.remove("on");
+        document.getElementById("sc").classList.remove("on");
+        toast("Đã xóa tất cả", "ok");
       }
 
       function processFiles() {
-        if (files.length === 0) return;
-
-        let allLines = [];
-        files.forEach((f) => {
-          const lines = f.content.split("\n");
-          lines.forEach((line) => {
-            const trimmed = line.trimEnd();
-            if (trimmed === "") return; // skip empty lines
-            allLines.push(trimmed);
+        if (!fileData.length) return;
+        var all = [];
+        fileData.forEach(function (f) {
+          f.content.split("\n").forEach(function (line) {
+            var t = line.trimEnd();
+            if (t !== "") all.push(t);
           });
         });
-
-        let processed = [];
-        if (currentMode === 1 || currentMode === 3) {
-          // No processing, just merge
-          processed = allLines;
-        } else if (currentMode === 2) {
-          // Remove columns 10, 11, 12, 13 (index 9,10,11,12) if empty
-          let removedCols = 0;
-          processed = allLines.map((line) => {
-            const parts = line.split("|");
-            if (parts.length >= 14) {
-              // Check if positions 9,10,11,12 are empty/whitespace
-              const toRemove = [9, 10, 11, 12];
-              // Remove from highest index to lowest to not shift
-              let newParts = [...parts];
-              let removed = 0;
-              toRemove.forEach((i) => {
-                if (
-                  newParts[i - removed] !== undefined &&
-                  newParts[i - removed].trim() === ""
-                ) {
-                  newParts.splice(i - removed, 1);
-                  removed++;
-                }
+        var out = [];
+        if (mode === 1 || mode === 3) {
+          out = all;
+        } else {
+          out = all.map(function (line) {
+            var p = line.split("|");
+            if (p.length >= 13) {
+              [12, 11, 10, 9].forEach(function (idx) {
+                if (idx < p.length && p[idx].trim() === "") p.splice(idx, 1);
               });
-              if (removed > 0) removedCols++;
-              return newParts.join("|");
             }
-            return line;
+            return p.join("|");
           });
         }
-
-        resultContent = processed.join("\n");
-
-        // Show result
-        const preview = processed
-          .slice(0, 8)
-          .map((l) => (l.length > 120 ? l.substring(0, 120) + "..." : l))
+        merged = out.join("\n");
+        var prev = out
+          .slice(0, 6)
+          .map(function (l) {
+            return l.length > 130 ? l.substring(0, 130) + "…" : l;
+          })
           .join("\n");
-
-        document.getElementById("resultPreview").textContent =
-          preview +
-          (processed.length > 8
-            ? "\n\n... và " + (processed.length - 8) + " dòng nữa"
-            : "");
-
-        const modeNames = {
+        if (out.length > 6)
+          prev += "\n\n… và " + (out.length - 6).toLocaleString() + " dòng nữa";
+        document.getElementById("rprev").textContent = prev;
+        var mnames = {
           1: "Mode 1 – Thất Bại",
           2: "Mode 2 – 2FA",
           3: "Mode 3 – Thường",
         };
-        document.getElementById("resultBadge").textContent =
-          modeNames[currentMode];
-        document.getElementById("resultMeta").innerHTML =
-          `<strong>${processed.length.toLocaleString()}</strong> dòng · <strong>${files.length}</strong> files · <strong>${formatSize(new Blob([resultContent]).size)}</strong>`;
-
-        const rc = document.getElementById("resultCard");
-        rc.classList.add("visible");
-        rc.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        showToast(
-          `Gộp xong! ${processed.length.toLocaleString()} dòng từ ${files.length} file`,
-          "success",
+        document.getElementById("rbadge").textContent = mnames[mode];
+        document.getElementById("rmeta").innerHTML =
+          "<b>" +
+          out.length.toLocaleString() +
+          "</b> dòng · <b>" +
+          fileData.length +
+          "</b> files · <b>" +
+          fmtSz(new Blob([merged]).size) +
+          "</b>";
+        document.getElementById("rc").classList.add("on");
+        document.getElementById("sc").classList.remove("on");
+        setTimeout(function () {
+          document
+            .getElementById("rc")
+            .scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 50);
+        toast(
+          "Gộp xong! " +
+            out.length.toLocaleString() +
+            " dòng từ " +
+            fileData.length +
+            " file",
+          "ok",
         );
       }
 
-      function downloadResult() {
-        if (!resultContent) return;
-        const blob = new Blob([resultContent], {
-          type: "text/plain;charset=utf-8",
+      function dlMerged() {
+        if (!merged) return;
+        var now = new Date();
+        var dd = pad(now.getDate()),
+          mm = pad(now.getMonth() + 1),
+          yy = now.getFullYear();
+        var cnt = merged.split("\n").filter(function (l) {
+          return l.trim() !== "";
+        }).length;
+        var mnames = { 1: "that-bai", 2: "2fa", 3: "thuong" };
+        dl(
+          merged,
+          "ig-" +
+            mnames[mode] +
+            "-" +
+            dd +
+            "-" +
+            mm +
+            "-" +
+            yy +
+            "-" +
+            cnt +
+            ".txt",
+        );
+        toast("Đã tải file gộp!", "ok");
+      }
+
+      function openSplit() {
+        document.getElementById("sc").classList.add("on");
+        previewSplit();
+        setTimeout(function () {
+          document
+            .getElementById("sc")
+            .scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 50);
+      }
+
+      function previewSplit() {
+        if (!merged) return;
+        var lines = merged.split("\n").filter(function (l) {
+          return l.trim() !== "";
         });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        const modeNames = { 1: "that-bai", 2: "2fa", 3: "thuong" };
-        const now = new Date();
-        const date = `${now.getDate().toString().padStart(2, "0")}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getFullYear()}`;
-        const count = resultContent
-          .split("\n")
-          .filter((l) => l.trim() !== "").length;
+        var n = parseInt(document.getElementById("sc-n").value) || 500;
+        var base = document.getElementById("sc-b").value.trim() || "ig";
+        var total = n > 0 ? Math.ceil(lines.length / n) : 0;
+        var wrap = document.getElementById("sp-wrap");
+        var list = document.getElementById("sp-list");
+        if (!total) {
+          wrap.style.display = "none";
+          return;
+        }
+        wrap.style.display = "block";
+        list.innerHTML = "";
+        var show = Math.min(total, 12);
+        for (var i = 0; i < show; i++) {
+          var s = i * n,
+            e = Math.min(s + n, lines.length);
+          var c = document.createElement("div");
+          c.className = "chip";
+          c.textContent =
+            base +
+            "_" +
+            (i + 1) +
+            ".txt · " +
+            (e - s).toLocaleString() +
+            " dòng";
+          list.appendChild(c);
+        }
+        if (total > 12) {
+          var more = document.createElement("div");
+          more.className = "chipm";
+          more.textContent = "+" + (total - 12) + " file nữa…";
+          list.appendChild(more);
+        }
+        var inf = document.createElement("div");
+        inf.style.cssText =
+          "width:100%;font-size:11px;color:var(--muted);margin-top:5px";
+        inf.textContent =
+          "→ Tổng " +
+          total +
+          " file · " +
+          lines.length.toLocaleString() +
+          " dòng · mỗi file tối đa " +
+          n.toLocaleString() +
+          " dòng";
+        list.appendChild(inf);
+      }
+
+      function doSplit() {
+        if (!merged) {
+          toast("Hãy Gộp file trước!", "err");
+          return;
+        }
+        var lines = merged.split("\n").filter(function (l) {
+          return l.trim() !== "";
+        });
+        var n = parseInt(document.getElementById("sc-n").value) || 500;
+        var base = document.getElementById("sc-b").value.trim() || "ig";
+        if (n < 1) {
+          toast("Số dòng phải > 0", "err");
+          return;
+        }
+        var now = new Date();
+        var dd = pad(now.getDate()),
+          mm = pad(now.getMonth() + 1),
+          yy = now.getFullYear();
+        var total = Math.ceil(lines.length / n);
+        var i = 0;
+        function next() {
+          if (i >= total) {
+            toast("Tách xong! " + total + " file đã tải", "ok");
+            return;
+          }
+          var chunk = lines.slice(i * n, (i + 1) * n);
+          dl(
+            chunk.join("\n"),
+            base +
+              "_" +
+              (i + 1) +
+              "-" +
+              dd +
+              "-" +
+              mm +
+              "-" +
+              yy +
+              "-" +
+              chunk.length +
+              ".txt",
+          );
+          i++;
+          setTimeout(next, 350);
+        }
+        toast("Đang tải " + total + " file…", "ok");
+        next();
+      }
+
+      function dl(content, filename) {
+        var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
         a.href = url;
-        a.download = `ig-${modeNames[currentMode]}-${date}-${count}.txt`;
+        a.download = filename;
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        showToast("Đã tải file xuống!", "success");
       }
 
-      function formatSize(bytes) {
-        if (bytes < 1024) return bytes + "B";
-        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + "KB";
-        return (bytes / 1024 / 1024).toFixed(2) + "MB";
+      function fmtSz(b) {
+        if (b < 1024) return b + "B";
+        if (b < 1048576) return (b / 1024).toFixed(1) + "KB";
+        return (b / 1048576).toFixed(2) + "MB";
       }
 
-      let toastTimer;
-      function showToast(msg, type = "success") {
-        const t = document.getElementById("toast");
+      function pad(n) {
+        return String(n).padStart(2, "0");
+      }
+      function esc(s) {
+        return s
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      // ---- Standalone Split ----
+      var splitLines = [];
+      var splitMode = "even"; // 'even' | 'rows'
+      var outMode = "files"; // 'files' | 'zip'
+
+      var sdz = document.getElementById("sdz");
+      sdz.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        sdz.classList.add("drag");
+      });
+      sdz.addEventListener("dragleave", function () {
+        sdz.classList.remove("drag");
+      });
+      sdz.addEventListener("drop", function (e) {
+        e.preventDefault();
+        sdz.classList.remove("drag");
+        var fs = Array.from(e.dataTransfer.files).filter(function (f) {
+          return f.name.endsWith(".txt");
+        });
+        if (!fs.length) {
+          toast("Chỉ nhận file .txt!", "err");
+          return;
+        }
+        loadSplitFile(fs);
+      });
+
+      function loadSplitFile(list) {
+        var f = Array.from(list).find(function (f) {
+          return f.name.endsWith(".txt");
+        });
+        if (!f) return;
+        var r = new FileReader();
+        r.onload = function (e) {
+          splitLines = e.target.result.split("\n").filter(function (l) {
+            return l.trim() !== "";
+          });
+          var item = document.getElementById("sf-item");
+          item.innerHTML =
+            '<span class="fi-ico">📄</span>' +
+            '<span class="fi-name">' +
+            esc(f.name) +
+            "</span>" +
+            '<span class="fi-ln">' +
+            splitLines.length.toLocaleString() +
+            " dòng</span>" +
+            '<span class="fi-sz">' +
+            fmtSz(f.size) +
+            "</span>" +
+            '<button class="fi-rm" onclick="clearSplitFile()" title="Xóa">✕</button>';
+          document.getElementById("sf-info").style.display = "block";
+          document.getElementById("sf-options").style.display = "block";
+          calcSplit();
+        };
+        r.readAsText(f, "UTF-8");
+      }
+
+      function clearSplitFile() {
+        splitLines = [];
+        document.getElementById("sf-info").style.display = "none";
+        document.getElementById("sf-options").style.display = "none";
+        document.getElementById("sf-prev").style.display = "none";
+        document.getElementById("sfi").value = "";
+      }
+
+      function setSplitMode(m) {
+        splitMode = m;
+        document.getElementById("sm-even").className =
+          "btn " +
+          (m === "even" ? "bp" : "bs") +
+          " " +
+          (m === "even" ? "" : "");
+        document.getElementById("sm-rows").className =
+          "btn " + (m === "rows" ? "bp" : "bs");
+        // fix flex
+        document.getElementById("sm-even").style.flex = "1";
+        document.getElementById("sm-even").style.justifyContent = "center";
+        document.getElementById("sm-rows").style.flex = "1";
+        document.getElementById("sm-rows").style.justifyContent = "center";
+        var lbl = document.getElementById("sf-lbl");
+        var inp = document.getElementById("sf-val");
+        if (m === "even") {
+          lbl.textContent = "Số file muốn tách";
+          inp.value =
+            Math.min(parseInt(inp.value) || 2, splitLines.length) || 2;
+        } else {
+          lbl.textContent = "Số dòng mỗi file";
+          inp.value = 500;
+        }
+        calcSplit();
+      }
+
+      function calcSplit() {
+        if (!splitLines.length) return;
+        var val = parseInt(document.getElementById("sf-val").value) || 1;
+        var base = document.getElementById("sf-base").value.trim() || "ig";
+        var total, rowsEach;
+        if (splitMode === "even") {
+          total = Math.max(1, Math.min(val, splitLines.length));
+          rowsEach = Math.ceil(splitLines.length / total);
+        } else {
+          rowsEach = Math.max(1, val);
+          total = Math.ceil(splitLines.length / rowsEach);
+        }
+        var prev = document.getElementById("sf-prev");
+        var chips = document.getElementById("sf-chips");
+        if (!total) {
+          prev.style.display = "none";
+          return;
+        }
+        prev.style.display = "block";
+        chips.innerHTML = "";
+        var show = Math.min(total, 12);
+        for (var i = 0; i < show; i++) {
+          var s = i * rowsEach,
+            e = Math.min(s + rowsEach, splitLines.length);
+          var c = document.createElement("div");
+          c.className = "chip";
+          c.textContent =
+            base +
+            "_" +
+            (i + 1) +
+            ".txt · " +
+            (e - s).toLocaleString() +
+            " dòng";
+          chips.appendChild(c);
+        }
+        if (total > 12) {
+          var more = document.createElement("div");
+          more.className = "chipm";
+          more.textContent = "+" + (total - 12) + " file nữa…";
+          chips.appendChild(more);
+        }
+        var inf = document.createElement("div");
+        inf.style.cssText =
+          "width:100%;font-size:11px;color:var(--muted);margin-top:5px";
+        inf.textContent =
+          "→ Tổng " +
+          total +
+          " file · " +
+          splitLines.length.toLocaleString() +
+          " dòng · mỗi file ~" +
+          rowsEach.toLocaleString() +
+          " dòng";
+        chips.appendChild(inf);
+      }
+
+      function setOutMode(m) {
+        outMode = m;
+        document.getElementById("out-files").className =
+          "btn " + (m === "files" ? "bp" : "bs");
+        document.getElementById("out-zip").className =
+          "btn " + (m === "zip" ? "bp" : "bs");
+        document.getElementById("out-files").style.cssText =
+          "flex:1;justify-content:center";
+        document.getElementById("out-zip").style.cssText =
+          "flex:1;justify-content:center";
+        var btn = document.getElementById("sf-exec-btn");
+        btn.innerHTML =
+          m === "zip"
+            ? '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg> Tách &amp; Tải ZIP'
+            : '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg> Tách &amp; Tải từng file';
+      }
+
+      function execSplit() {
+        if (!splitLines.length) {
+          toast("Chưa có file!", "err");
+          return;
+        }
+        var val = parseInt(document.getElementById("sf-val").value) || 1;
+        var base = document.getElementById("sf-base").value.trim() || "ig";
+        var total, rowsEach;
+        if (splitMode === "even") {
+          total = Math.max(1, Math.min(val, splitLines.length));
+          rowsEach = Math.ceil(splitLines.length / total);
+        } else {
+          rowsEach = Math.max(1, val);
+          total = Math.ceil(splitLines.length / rowsEach);
+        }
+        var now = new Date();
+        var dd = pad(now.getDate()),
+          mm = pad(now.getMonth() + 1),
+          yy = now.getFullYear();
+
+        // Build chunks
+        var chunks = [];
+        for (var i = 0; i < total; i++) {
+          var chunk = splitLines.slice(i * rowsEach, (i + 1) * rowsEach);
+          chunks.push({
+            name:
+              base +
+              "_" +
+              (i + 1) +
+              "-" +
+              dd +
+              "-" +
+              mm +
+              "-" +
+              yy +
+              "-" +
+              chunk.length +
+              ".txt",
+            content: chunk.join("\n"),
+          });
+        }
+
+        if (outMode === "zip") {
+          toast("Đang nén ZIP…", "ok");
+          setTimeout(function () {
+            try {
+              var zipBytes = makeZip(chunks);
+              var blob = new Blob([zipBytes], { type: "application/zip" });
+              var url = URL.createObjectURL(blob);
+              var a = document.createElement("a");
+              a.href = url;
+              a.download =
+                base +
+                "-" +
+                dd +
+                "-" +
+                mm +
+                "-" +
+                yy +
+                "-" +
+                total +
+                "files.zip";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              toast("ZIP xong! " + total + " file trong 1 zip", "ok");
+            } catch (e) {
+              toast("Lỗi tạo ZIP: " + e.message, "err");
+            }
+          }, 50);
+        } else {
+          var i = 0;
+          function next() {
+            if (i >= chunks.length) {
+              toast("Tách xong! " + total + " file đã tải", "ok");
+              return;
+            }
+            dl(chunks[i].content, chunks[i].name);
+            i++;
+            setTimeout(next, 350);
+          }
+          toast("Đang tải " + total + " file…", "ok");
+          next();
+        }
+      }
+
+      var _tt;
+      function toast(msg, type) {
+        var t = document.getElementById("toast");
         document.getElementById("toastMsg").textContent = msg;
-        t.className = "toast " + type + " show";
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
+        t.className = "toast " + (type === "err" ? "err" : "ok") + " show";
+        clearTimeout(_tt);
+        _tt = setTimeout(function () {
+          t.classList.remove("show");
+        }, 3000);
+      }
+
+      // ---- Native ZIP builder ----
+      function makeZip(chunks) {
+        var enc = new TextEncoder();
+        var files = chunks.map(function (c) {
+          return { name: enc.encode(c.name), data: enc.encode(c.content) };
+        });
+
+        function wb(arr, n, bytes) {
+          for (var i = 0; i < bytes; i++) arr.push((n >> (8 * i)) & 0xff);
+        }
+
+        var crcTable = (function () {
+          var t = new Uint32Array(256);
+          for (var i = 0; i < 256; i++) {
+            var c = i;
+            for (var j = 0; j < 8; j++)
+              c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+            t[i] = c;
+          }
+          return t;
+        })();
+
+        function crc32(data) {
+          var crc = 0xffffffff;
+          for (var i = 0; i < data.length; i++)
+            crc = crcTable[(crc ^ data[i]) & 0xff] ^ (crc >>> 8);
+          return (crc ^ 0xffffffff) >>> 0;
+        }
+
+        var localParts = [],
+          centralParts = [];
+        var offset = 0;
+
+        files.forEach(function (f) {
+          var crc = crc32(f.data);
+          var sz = f.data.length;
+          var nl = f.name.length;
+
+          // Local file header (30 bytes) + filename + data
+          var lh = [];
+          lh.push(0x50, 0x4b, 0x03, 0x04);
+          wb(lh, 20, 2);
+          wb(lh, 0, 2);
+          wb(lh, 0, 2);
+          wb(lh, 0, 2);
+          wb(lh, 0, 2);
+          wb(lh, crc, 4);
+          wb(lh, sz, 4);
+          wb(lh, sz, 4);
+          wb(lh, nl, 2);
+          wb(lh, 0, 2);
+          var lf = new Uint8Array(lh.length + nl + sz);
+          lf.set(lh, 0);
+          lf.set(f.name, lh.length);
+          lf.set(f.data, lh.length + nl);
+
+          // Central directory header (46 bytes) + filename
+          var ch = [];
+          ch.push(0x50, 0x4b, 0x01, 0x02);
+          wb(ch, 20, 2);
+          wb(ch, 20, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 2);
+          wb(ch, crc, 4);
+          wb(ch, sz, 4);
+          wb(ch, sz, 4);
+          wb(ch, nl, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 2);
+          wb(ch, 0, 4);
+          wb(ch, offset, 4);
+          var cf = new Uint8Array(ch.length + nl);
+          cf.set(ch, 0);
+          cf.set(f.name, ch.length);
+
+          localParts.push(lf);
+          centralParts.push(cf);
+          offset += lf.length;
+        });
+
+        var centralSize = centralParts.reduce(function (s, p) {
+          return s + p.length;
+        }, 0);
+        var n = files.length;
+        var eocd = [];
+        eocd.push(0x50, 0x4b, 0x05, 0x06);
+        wb(eocd, 0, 2);
+        wb(eocd, 0, 2);
+        wb(eocd, n, 2);
+        wb(eocd, n, 2);
+        wb(eocd, centralSize, 4);
+        wb(eocd, offset, 4);
+        wb(eocd, 0, 2);
+
+        var out = new Uint8Array(offset + centralSize + eocd.length);
+        var pos = 0;
+        localParts.forEach(function (p) {
+          out.set(p, pos);
+          pos += p.length;
+        });
+        centralParts.forEach(function (p) {
+          out.set(p, pos);
+          pos += p.length;
+        });
+        out.set(eocd, pos);
+        return out;
       }
     </script>
   </body>
