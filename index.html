@@ -556,6 +556,26 @@
         color: var(--muted);
       }
 
+      /* Filename preview chip */
+      .fname-preview {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        background: var(--alight);
+        border: 1px solid rgba(42, 86, 224, 0.2);
+        border-radius: 6px;
+        font-size: 11.5px;
+        font-family: var(--mono);
+        color: var(--accent);
+        margin-top: 5px;
+      }
+      .fname-preview svg {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+      }
+
       .toast {
         position: fixed;
         bottom: 22px;
@@ -984,7 +1004,69 @@
 
       <!-- Actions -->
       <div class="card">
+        <div class="ch">
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
+            />
+          </svg>
+          <h2>Xử lý &amp; Xuất</h2>
+        </div>
         <div class="cb" style="padding: 14px 18px">
+          <!-- Custom merge filename -->
+          <div style="margin-bottom: 14px">
+            <label class="slabel">
+              Tên file gộp
+              <span
+                style="
+                  font-weight: 400;
+                  color: var(--muted);
+                  font-size: 10.5px;
+                  margin-left: 4px;
+                "
+                >(tùy chọn — để trống dùng tên tự động)</span
+              >
+            </label>
+            <div style="display: flex; align-items: center; gap: 0">
+              <input
+                type="text"
+                id="mergeBaseName"
+                class="sinput"
+                placeholder="vd: account-vip hoặc để trống"
+                style="border-radius: 8px 0 0 8px; border-right: none; flex: 1"
+                oninput="updateMergeNamePreview()"
+              />
+              <span
+                style="
+                  padding: 0 10px;
+                  height: 38px;
+                  display: flex;
+                  align-items: center;
+                  background: var(--border);
+                  border: 1.5px solid var(--border);
+                  border-radius: 0 8px 8px 0;
+                  font-size: 12.5px;
+                  font-family: var(--mono);
+                  color: var(--muted);
+                  white-space: nowrap;
+                  flex-shrink: 0;
+                "
+                >.txt</span
+              >
+            </div>
+            <div
+              id="mergeNamePreview"
+              style="margin-top: 6px; min-height: 22px"
+            ></div>
+          </div>
+
           <div class="brow">
             <button
               class="btn bp"
@@ -1205,6 +1287,7 @@
       var mode = 1;
       var fileData = [];
       var merged = "";
+      var mergedFileName = ""; // stores the resolved filename used for download
 
       var modeText = {
         1: "Mode 1 – File Thất Bại: Gộp tất cả dòng, giữ nguyên 100% dữ liệu, không sửa gì.",
@@ -1212,6 +1295,70 @@
         3: "Mode 3 – File Thường: Gộp tất cả dòng, không chỉnh sửa bất kỳ điều gì.",
       };
       var modeColor = { 1: "blue", 2: "yellow", 3: "blue" };
+
+      // --- Merge name preview helpers ---
+      function getMergeAutoName(lineCount) {
+        var now = new Date();
+        var dd = pad(now.getDate()),
+          mm = pad(now.getMonth() + 1),
+          yy = now.getFullYear();
+        var mnames = { 1: "that-bai", 2: "2fa", 3: "thuong" };
+        return (
+          "ig-" +
+          mnames[mode] +
+          "-" +
+          dd +
+          "-" +
+          mm +
+          "-" +
+          yy +
+          "-" +
+          (lineCount || "?") +
+          ".txt"
+        );
+      }
+
+      function getMergeCustomName(lineCount) {
+        var base = document.getElementById("mergeBaseName").value.trim();
+        if (!base) return null;
+        var now = new Date();
+        var dd = pad(now.getDate()),
+          mm = pad(now.getMonth() + 1),
+          yy = now.getFullYear();
+        return (
+          base +
+          "-" +
+          dd +
+          "-" +
+          mm +
+          "-" +
+          yy +
+          "-" +
+          (lineCount || "?") +
+          ".txt"
+        );
+      }
+
+      function updateMergeNamePreview() {
+        var preview = document.getElementById("mergeNamePreview");
+        var base = document.getElementById("mergeBaseName").value.trim();
+        if (!base) {
+          preview.innerHTML =
+            '<span style="font-size:11px;color:var(--muted);">→ Tên tự động: <span style="font-family:var(--mono);">' +
+            getMergeAutoName("…") +
+            "</span></span>";
+        } else {
+          var name = getMergeCustomName("…");
+          preview.innerHTML =
+            '<span class="fname-preview">' +
+            '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>' +
+            esc(name) +
+            "</span>";
+        }
+      }
+
+      // Init preview on load
+      updateMergeNamePreview();
 
       function setMode(m) {
         mode = m;
@@ -1223,6 +1370,7 @@
         document.getElementById("modeInfoTxt").textContent = modeText[m];
         document.getElementById("rc").classList.remove("on");
         document.getElementById("sc").classList.remove("on");
+        updateMergeNamePreview();
       }
 
       var dz = document.getElementById("dz");
@@ -1339,7 +1487,10 @@
       function clearAll() {
         fileData = [];
         merged = "";
+        mergedFileName = "";
         document.getElementById("fi").value = "";
+        document.getElementById("mergeBaseName").value = "";
+        updateMergeNamePreview();
         renderList();
         document.getElementById("rc").classList.remove("on");
         document.getElementById("sc").classList.remove("on");
@@ -1370,6 +1521,32 @@
           });
         }
         merged = out.join("\n");
+
+        // Resolve final filename
+        var cnt = out.length;
+        var customName = getMergeCustomName(cnt);
+        if (customName) {
+          mergedFileName = customName;
+        } else {
+          var now = new Date();
+          var dd = pad(now.getDate()),
+            mm = pad(now.getMonth() + 1),
+            yy = now.getFullYear();
+          var mnames = { 1: "that-bai", 2: "2fa", 3: "thuong" };
+          mergedFileName =
+            "ig-" +
+            mnames[mode] +
+            "-" +
+            dd +
+            "-" +
+            mm +
+            "-" +
+            yy +
+            "-" +
+            cnt +
+            ".txt";
+        }
+
         var prev = out
           .slice(0, 6)
           .map(function (l) {
@@ -1379,12 +1556,12 @@
         if (out.length > 6)
           prev += "\n\n… và " + (out.length - 6).toLocaleString() + " dòng nữa";
         document.getElementById("rprev").textContent = prev;
-        var mnames = {
+        var mnames2 = {
           1: "Mode 1 – Thất Bại",
           2: "Mode 2 – 2FA",
           3: "Mode 3 – Thường",
         };
-        document.getElementById("rbadge").textContent = mnames[mode];
+        document.getElementById("rbadge").textContent = mnames2[mode];
         document.getElementById("rmeta").innerHTML =
           "<b>" +
           out.length.toLocaleString() +
@@ -1392,7 +1569,10 @@
           fileData.length +
           "</b> files · <b>" +
           fmtSz(new Blob([merged]).size) +
-          "</b>";
+          "</b>" +
+          ' · <span style="font-family:var(--mono);font-size:11px;color:var(--accent);">' +
+          esc(mergedFileName) +
+          "</span>";
         document.getElementById("rc").classList.add("on");
         document.getElementById("sc").classList.remove("on");
         setTimeout(function () {
@@ -1412,29 +1592,8 @@
 
       function dlMerged() {
         if (!merged) return;
-        var now = new Date();
-        var dd = pad(now.getDate()),
-          mm = pad(now.getMonth() + 1),
-          yy = now.getFullYear();
-        var cnt = merged.split("\n").filter(function (l) {
-          return l.trim() !== "";
-        }).length;
-        var mnames = { 1: "that-bai", 2: "2fa", 3: "thuong" };
-        dl(
-          merged,
-          "ig-" +
-            mnames[mode] +
-            "-" +
-            dd +
-            "-" +
-            mm +
-            "-" +
-            yy +
-            "-" +
-            cnt +
-            ".txt",
-        );
-        toast("Đã tải file gộp!", "ok");
+        dl(merged, mergedFileName);
+        toast("Đã tải: " + mergedFileName, "ok");
       }
 
       function openSplit() {
